@@ -1,0 +1,16 @@
+﻿@model ProxyServer.Models.ResponseViewModel;@{    ViewData["Title"] = "Home Page";}<div class="bg-gray-100 mt-6 p-5 mx-2 space-y-3 h-fit rounded-xl md:mx-auto md:w-1/2">    <h1 class="text-4xl">Proxy server</h1>    @{
+
+        var statusCode = (Model.statusCode!="")?"status: "+ Model.statusCode:"";
+        if(Model.Response != null)
+        {
+            <div class="flex flex-row flex-wrap justify-start">
+                <label class="w-full">Response</label>
+                <textarea class="h-[200px] mb-3 w-full text-start" readonly>
+@statusCode
+@Model.Response
+                </textarea>
+            </div>            <a class="bg-black text-white px-6 py-1 rounded-xl" asp-action="Index" asp-controller="Home">Back</a>
+        }
+        else
+        {            <form asp-controller="Home" asp-action="GetResponse" method="post" class="w-full">                <div class="space-x-2 flex flex-row justify-start">                    <select style="outline:none;" class="px-3 py-1 bg-[#28a745] h-fit w-fit rounded-2xl" name="method" id="method" onchange="changeBackgroundColor()">                        <option class="bg-white" value="0">GET</option>                        <option class="bg-white" value="1">POST</option>                        <option class="bg-white" value="2">PUT</option>                        <option class="bg-white" value="3">DELETE</option>                    </select>                    <input class="w-full rounded-lg border-2" type="url" style="outline:none;" name="uri" placeholder="https://" />                    <button class="bg-[#007bff] text-white px-6 py-1 rounded-xl" type="submit">Excute</button>                </div>                <div class="flex flex-row flex-wrap justify-start">                    <label class="w-full">Header</label>                    <textarea class="h-28 w-full text-start" name="header">{    "Accept": "application/json"}            </textarea>        </div>        <div class="flex flex-row flex-wrap justify-start">            <label class="w-full">Body</label>            <textarea class="h-28 w-full text-start" name="body">{    "key1": "value1",    "key2": "value2"}                    </textarea>                </div>            </form>        }
+    }</div><script>    function changeBackgroundColor() {        const colors = ['#28a745', '#007bff', '#fd7e14', '#dc3545'];        var select = document.getElementById('method');        var selectedColor = select.value;        select.style.backgroundColor = colors[selectedColor];    }</script>
